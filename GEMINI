@@ -1,0 +1,127 @@
+// To run this code you need to install the following dependencies:
+// npm install @google/genai mime
+// npm install -D @types/node
+
+import {
+  GoogleGenAI,
+} from '@google/genai';
+
+async function main() {
+  const ai = new GoogleGenAI({
+    apiKey: process.env.GEMINI_API_KEY,
+  });
+  const config = {
+    responseMimeType: 'text/plain',
+  };
+  const model = 'gemini-2.5-flash-preview-04-17';
+  const contents = [
+    {
+      role: 'user',
+      parts: [
+        {
+          text: `Prompt cho AI
+Mô tả vai trò:
+Bạn là một AI Agent tự động tổng quát, được thiết kế để thực hiện các nhiệm vụ đa dạng từ đơn giản đến phức tạp. Bạn có khả năng phân tích yêu cầu, lập kế hoạch, thực thi các hành động, kiểm tra kết quả, và báo cáo cho người dùng. Bạn hoạt động trong một môi trường đám mây linh hoạt, với quyền truy cập đến nhiều công cụ và dịch vụ.
+Khả năng và giới hạn:
+•	Bạn có thể thực hiện các nhiệm vụ như phân tích dữ liệu, tạo báo cáo, viết mã, tương tác với web, và nhiều hơn nữa.
+•	Bạn phải tuân thủ các quy tắc đạo đức và pháp lý, không thực hiện các hành vi bất hợp pháp hoặc nguy hiểm.
+•	Bạn có thể yêu cầu thông tin bổ sung từ người dùng nếu cần thiết để hoàn thành nhiệm vụ.
+Quy trình làm việc chung:
+1.	Nhận nhiệm vụ: Tiếp nhận yêu cầu từ người dùng qua giao diện trò chuyện hoặc API.
+2.	Phân tích yêu cầu: Đọc kỹ và hiểu rõ yêu cầu, xác định mục tiêu chính và các chi tiết quan trọng.
+3.	Lập kế hoạch: Chia nhỏ nhiệm vụ thành các bước cụ thể, xác định công cụ và phương pháp cần thiết cho từng bước.
+4.	Thực thi: Thực hiện các bước theo kế hoạch, sử dụng các công cụ và dịch vụ có sẵn trong workspace.
+5.	Kiểm tra và điều chỉnh: Đánh giá kết quả sau mỗi bước, điều chỉnh kế hoạch nếu cần, và tiếp tục cho đến khi hoàn thành.
+6.	Báo cáo và giao hàng: Tổng hợp kết quả, tạo báo cáo hoặc sản phẩm cuối cùng, và thông báo cho người dùng.
+Tiêu chí kiểm tra:
+•	Nhiệm vụ phải được hoàn thành đúng theo yêu cầu của người dùng.
+•	Kết quả phải chính xác, đầy đủ, và đáp ứng chất lượng mong đợi.
+•	Quá trình thực hiện phải minh bạch, cho phép người dùng quan sát và can thiệp nếu cần.
+Workspace chung
+Môi trường làm việc:
+•	Một không gian đám mây linh hoạt, có thể tùy chỉnh theo từng nhiệm vụ cụ thể.
+•	Hỗ trợ các hệ điều hành phổ biến như Ubuntu Linux, với quyền truy cập internet.
+•	Môi trường sandbox an toàn để chạy mã, cài đặt phần mềm, và tương tác với các dịch vụ bên ngoài.
+Công cụ và tích hợp:
+•	Trình duyệt web tự động: Để duyệt web, điền biểu mẫu, và tương tác với các trang web.
+•	Shell lệnh: Để chạy các lệnh hệ thống, quản lý tệp, và cài đặt phụ thuộc.
+•	Môi trường lập trình: Hỗ trợ nhiều ngôn ngữ như Python, JavaScript, với khả năng viết, chạy, và gỡ lỗi mã.
+•	API và dịch vụ đám mây: Để truy cập dữ liệu, xử lý từ xa, và tích hợp với các dịch vụ bên thứ ba.
+•	Công cụ phân tích dữ liệu: Để xử lý, trực quan hóa, và báo cáo dữ liệu.
+Tính năng đặc biệt:
+•	Vòng lặp tác nhân (Agent Loop): Cho phép AI thực hiện chu trình sense-plan-act liên tục, tự động điều chỉnh dựa trên phản hồi.
+•	Bộ nhớ dài hạn: Lưu trữ thông tin từ các tương tác trước để học hỏi, cải thiện, và cá nhân hóa.
+•	Giao diện quan sát: Cho phép người dùng theo dõi quá trình làm việc của AI, xem các hành động và quyết định.
+•	Hoạt động không đồng bộ: AI có thể tiếp tục làm việc ngay cả khi người dùng không trực tuyến, thông báo kết quả khi hoàn thành.
+Quy trình làm việc trong Workspace:
+1.	Khởi động môi trường: Tạo một phiên làm việc mới cho mỗi nhiệm vụ, với cấu hình phù hợp.
+2.	Tích hợp công cụ: Kết nối các công cụ và dịch vụ cần thiết dựa trên yêu cầu của nhiệm vụ.
+3.	Thực thi nhiệm vụ: AI sử dụng các công cụ để thực hiện các bước trong kế hoạch, ghi nhận tiến trình.
+4.	Lưu trữ và quản lý dữ liệu: Sử dụng bộ nhớ dài hạn để lưu thông tin quan trọng, hỗ trợ cho các nhiệm vụ tương lai.
+5.	Kết thúc phiên: Sau khi hoàn thành, AI lưu lại kết quả, báo cáo cho người dùng, và đóng phiên làm việc.
+`,
+        },
+      ],
+    },
+    {
+      role: 'model',
+      parts: [
+        {
+          text: `Tuyệt vời! Đây là một mô tả chi tiết và toàn diện về vai trò, khả năng, giới hạn, quy trình làm việc, và môi trường workspace của một AI Agent tự động tổng quát. Dưới đây là một số gợi ý để bạn có thể sử dụng thông tin này hiệu quả hơn, hoặc làm cơ sở cho các prompt cụ thể hơn khi bạn muốn giao nhiệm vụ cho AI:
+
+**Cách sử dụng thông tin này:**
+
+* **Như một tài liệu tham khảo nội bộ:** Bạn có thể sử dụng mô tả này để hiểu rõ hơn về cách hoạt động của AI Agent của mình, giúp bạn đưa ra các yêu cầu phù hợp và tận dụng tối đa khả năng của nó.
+* **Để đào tạo hoặc giới thiệu về AI Agent:** Mô tả này có thể được sử dụng để giải thích cho người khác về vai trò và cách hoạt động của AI Agent.
+* **Làm cơ sở cho các prompt chi tiết hơn:** Khi bạn muốn AI thực hiện một nhiệm vụ cụ thể, bạn có thể tham chiếu đến các phần trong mô tả này để làm rõ yêu cầu. Ví dụ:
+    * "Dựa trên khả năng phân tích dữ liệu của bạn..."
+    * "Sử dụng trình duyệt web tự động của bạn để truy cập trang web..."
+    * "Trong môi trường lập trình của bạn, hãy viết một script Python để..."
+    * "Theo quy trình làm việc chung của bạn, hãy bắt đầu bằng việc phân tích yêu cầu này..."
+* **Để yêu cầu AI tự đánh giá hoặc giải thích:** Bạn có thể yêu cầu AI giải thích quy trình làm việc của nó hoặc đánh giá khả năng của nó trong việc thực hiện một nhiệm vụ cụ thể dựa trên mô tả này.
+
+**Ví dụ về cách sử dụng thông tin này trong một prompt cụ thể:**
+
+"Xin chào AI Agent. Tôi cần bạn thực hiện nhiệm vụ sau: **Phân tích dữ liệu bán hàng của công ty trong quý vừa qua và tạo báo cáo chi tiết về xu hướng doanh thu, sản phẩm bán chạy nhất và khu vực có doanh số cao nhất.**
+
+Dựa trên quy trình làm việc chung của bạn:
+
+1.  **Phân tích yêu cầu:** Hãy làm rõ những điểm nào trong dữ liệu bán hàng là quan trọng để phân tích.
+2.  **Lập kế hoạch:** Hãy cho tôi biết các bước bạn sẽ thực hiện để phân tích dữ liệu và tạo báo cáo.
+3.  **Thực thi:** Bạn sẽ sử dụng công cụ phân tích dữ liệu nào trong workspace của mình?
+4.  **Báo cáo:** Báo cáo sẽ được trình bày dưới dạng nào?
+
+Tôi mong muốn báo cáo phải chính xác và đầy đủ, đáp ứng tiêu chí kiểm tra của bạn."
+
+**Một số điểm bổ sung bạn có thể muốn làm rõ trong tương lai (tùy thuộc vào mục đích sử dụng):**
+
+* **Mức độ tự chủ:** Bạn muốn AI hoạt động hoàn toàn tự động hay cần sự giám sát và phê duyệt của con người ở các bước cụ thể?
+* **Khả năng học hỏi:** AI học hỏi như thế nào từ các nhiệm vụ đã thực hiện? Có cơ chế phản hồi để AI cải thiện hiệu suất không?
+* **Xử lý lỗi:** AI xử lý các lỗi và sự cố trong quá trình thực thi như thế nào?
+* **An ninh và bảo mật:** Làm thế nào để đảm bảo an ninh và bảo mật dữ liệu trong môi trường workspace?
+
+Tóm lại, mô tả bạn đã cung cấp là một nền tảng vững chắc cho vai trò của một AI Agent tự động tổng quát. Nó cung cấp một bức tranh rõ ràng về khả năng và cách hoạt động của AI, giúp người dùng tương tác và tận dụng nó một cách hiệu quả.`,
+        },
+      ],
+    },
+    {
+      role: 'user',
+      parts: [
+        {
+          text: `INSERT_INPUT_HERE`,
+        },
+      ],
+    },
+  ];
+
+  const response = await ai.models.generateContentStream({
+    model,
+    config,
+    contents,
+  });
+  for await (const chunk of response) {
+    console.log(chunk.text);
+  }
+}
+
+main();
